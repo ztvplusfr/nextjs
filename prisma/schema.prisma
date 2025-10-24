@@ -1,0 +1,307 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int         @id @default(autoincrement())
+  email     String      @unique
+  name      String?
+  username  String?     @unique
+  password  String
+  avatar    String?
+  timezone  String?     @default("Europe/Paris")
+  role      Role        @default(USER)
+  isActive  Boolean     @default(true)
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+  likes     Like[]
+  sessions  Session[]
+  watchlist Watchlist[]
+  history   History[]
+
+  @@map("users")
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    Int
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  device    String?
+  browser   String?
+  os        String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model Category {
+id          Int      @id @default(autoincrement())
+name        String   @unique
+description String?  @db.Text()
+slug        String   @unique
+isActive    Boolean  @default(true)
+createdAt   DateTime @default(now())
+updatedAt   DateTime @updatedAt
+movies      Movie[]
+series      Series[]
+
+@@map("categories")
+}
+
+model Movie {
+id               Int          @id @default(autoincrement())
+tmdbId           Int?         @unique
+title            String
+originalTitle    String?
+description      String?      @db.Text()
+year             Int?
+duration         Int?
+rating           Float?
+voteCount        Int?         @default(0)
+popularity       Float?
+poster           String?
+backdrop         String?
+trailer          String?
+adult            Boolean      @default(false)
+originalLanguage String?
+releaseDate      DateTime?
+isActive         Boolean      @default(true)
+isFeatured       Boolean      @default(false)
+createdAt        DateTime     @default(now())
+updatedAt        DateTime     @updatedAt
+categoryId       Int?
+genres           MovieGenre[]
+category         Category?    @relation(fields: [categoryId], references: [id])
+videos           Video[]
+
+@@map("movies")
+}
+
+model Series {
+id               Int           @id @default(autoincrement())
+tmdbId           Int?          @unique
+title            String
+originalTitle    String?
+description      String?       @db.Text()
+year             Int?
+rating           Float?
+voteCount        Int?          @default(0)
+popularity       Float?
+poster           String?
+backdrop         String?
+trailer          String?
+adult            Boolean       @default(false)
+originalLanguage String?
+firstAirDate     DateTime?
+lastAirDate      DateTime?
+numberOfSeasons  Int?          @default(0)
+numberOfEpisodes Int?          @default(0)
+status           String?
+isActive         Boolean       @default(true)
+isFeatured       Boolean       @default(false)
+createdAt        DateTime      @default(now())
+updatedAt        DateTime      @updatedAt
+categoryId       Int?
+seasons          Season[]
+category         Category?     @relation(fields: [categoryId], references: [id])
+genres           SeriesGenre[]
+
+@@map("series")
+}
+
+model Season {
+id           Int       @id @default(autoincrement())
+tmdbId       Int?      @unique
+number       Int
+title        String?
+description  String?   @db.Text()
+poster       String?
+airDate      DateTime?
+episodeCount Int?      @default(0)
+isActive     Boolean   @default(true)
+createdAt    DateTime  @default(now())
+updatedAt    DateTime  @updatedAt
+seriesId     Int
+episodes     Episode[]
+series       Series    @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+
+@@map("seasons")
+}
+
+model Episode {
+id          Int       @id @default(autoincrement())
+tmdbId      Int?      @unique
+number      Int
+title       String
+description String?   @db.Text()
+duration    Int?
+airDate     DateTime?
+rating      Float?
+voteCount   Int?      @default(0)
+stillPath   String?
+isActive    Boolean   @default(true)
+createdAt   DateTime  @default(now())
+updatedAt   DateTime  @updatedAt
+seasonId    Int
+season      Season    @relation(fields: [seasonId], references: [id], onDelete: Cascade)
+videos      Video[]
+
+@@map("episodes")
+}
+
+model Video {
+  id        Int       @id @default(autoincrement())
+  title     String
+  embedUrl  String
+  quality   String?
+  language  String?
+  type      VideoType
+  isActive  Boolean   @default(true)
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  movieId   Int?
+  episodeId Int?
+  episode   Episode?  @relation(fields: [episodeId], references: [id], onDelete: Cascade)
+  movie     Movie?    @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@map("videos")
+}
+
+model Genre {
+  id        Int           @id @default(autoincrement())
+  tmdbId    Int?          @unique
+  name      String        @unique
+  slug      String        @unique
+  isActive  Boolean       @default(true)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  movies    MovieGenre[]
+  series    SeriesGenre[]
+
+  @@map("genres")
+}
+
+model MovieGenre {
+  movieId Int
+  genreId Int
+  genre   Genre @relation(fields: [genreId], references: [id], onDelete: Cascade)
+  movie   Movie @relation(fields: [movieId], references: [id], onDelete: Cascade)
+
+  @@id([movieId, genreId])
+  @@map("movie_genres")
+}
+
+model SeriesGenre {
+  seriesId Int
+  genreId  Int
+  genre    Genre  @relation(fields: [genreId], references: [id], onDelete: Cascade)
+  series   Series @relation(fields: [seriesId], references: [id], onDelete: Cascade)
+
+  @@id([seriesId, genreId])
+  @@map("series_genres")
+}
+
+model TmdbConfig {
+  id           Int      @id @default(autoincrement())
+  apiKey       String   @unique
+  baseUrl      String   @default("https://api.themoviedb.org/3")
+  imageBaseUrl String   @default("https://image.tmdb.org/t/p")
+  language     String   @default("fr-FR")
+  isActive     Boolean  @default(true)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("tmdb_config")
+}
+
+model TmdbSync {
+id           Int      @id @default(autoincrement())
+type         String
+tmdbId       Int
+lastSync     DateTime
+status       String
+errorMessage String?  @db.Text()
+createdAt    DateTime @default(now())
+updatedAt    DateTime @updatedAt
+
+@@map("tmdb_sync")
+}
+
+model Watchlist {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  contentId   Int
+  contentType ContentType
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentId, contentType])
+  @@map("watchlist")
+}
+
+model Like {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  contentId   Int
+  contentType ContentType
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentId, contentType])
+  @@map("likes")
+}
+
+model PasswordReset {
+  id        Int       @id @default(autoincrement())
+  email     String
+  token     String    @unique
+  createdAt DateTime  @default(now())
+  expiresAt DateTime?
+  active    Boolean   @default(false)
+  used      Boolean   @default(false)
+
+  @@map("password_resets")
+}
+
+model History {
+  id          Int         @id @default(autoincrement())
+  userId      Int
+  contentId   Int
+  contentType ContentType
+  videoId     Int?
+  watchedAt   DateTime    @default(now())
+
+  user        User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, contentId, contentType, videoId])
+  @@map("history")
+}
+
+enum VideoType {
+  MOVIE
+  EPISODE
+  TRAILER
+}
+
+enum Role {
+  USER
+  ADMIN
+  MODERATOR
+}
+
+enum ContentType {
+  MOVIE
+  SERIES
+}

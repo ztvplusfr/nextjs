@@ -1,0 +1,482 @@
+/* ArtPlayer Custom Styles */
+
+/* Loading Spinner */
+.art-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-top: 3px solid #3b82f6;
+  border-radius: 50%;
+  animation: art-spin 1s linear infinite;
+}
+
+@keyframes art-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Player Container */
+.art-video-player {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: #000;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* Video Element */
+.art-video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Controls Styling */
+.art-controls {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+  backdrop-filter: blur(10px);
+  transition: opacity 0.3s ease;
+}
+
+.art-controls-left,
+.art-controls-center,
+.art-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Progress Bar */
+.art-progress {
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: height 0.2s ease;
+}
+
+.art-progress:hover {
+  height: 6px;
+}
+
+.art-progress-bar {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 2px;
+  transition: width 0.1s ease;
+}
+
+.art-progress-loaded {
+  height: 100%;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 2px;
+}
+
+/* Buttons */
+.art-controls button {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.art-controls button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.art-controls button:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Play/Pause Button */
+.art-controls .art-play {
+  font-size: 18px;
+}
+
+/* Volume Control */
+.art-controls .art-volume {
+  position: relative;
+}
+
+.art-volume-slider {
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 2px;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.art-volume-slider-bar {
+  height: 100%;
+  background: #3b82f6;
+  border-radius: 2px;
+  transition: width 0.1s ease;
+}
+
+/* Time Display */
+.art-time {
+  font-size: 12px;
+  color: white;
+  font-family: monospace;
+  white-space: nowrap;
+}
+
+/* Settings Panel */
+.art-settings {
+  position: absolute;
+  bottom: 100%;
+  right: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 200px;
+  max-height: 300px;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.art-settings-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  color: white;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.art-settings-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.art-settings-item.active {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+/* Quality Selector */
+.art-quality {
+  position: relative;
+}
+
+.art-quality-list {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 120px;
+  z-index: 1000;
+}
+
+.art-quality-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.art-quality-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.art-quality-item.active {
+  background: rgba(59, 130, 246, 0.2);
+  color: #3b82f6;
+}
+
+/* Fullscreen Button */
+.art-fullscreen {
+  font-size: 16px;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .art-controls {
+    padding: 8px;
+  }
+  
+  .art-controls button {
+    padding: 6px;
+    font-size: 14px;
+  }
+  
+  .art-time {
+    font-size: 11px;
+  }
+  
+  .art-settings {
+    min-width: 180px;
+    max-height: 250px;
+  }
+}
+
+/* Dark Theme Overrides */
+.art-video-player.dark {
+  background: #000;
+}
+
+.art-controls.dark {
+  background: linear-gradient(transparent, rgba(0, 0, 0, 0.9));
+}
+
+/* Custom Loading Animation */
+.art-loading {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+}
+
+.art-loading-spinner {
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgba(255, 255, 255, 0.1);
+  border-top: 4px solid #3b82f6;
+  border-radius: 50%;
+  animation: art-spin 1s linear infinite;
+}
+
+/* Error State */
+.art-error {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: white;
+  z-index: 10;
+}
+
+.art-error-icon {
+  font-size: 48px;
+  color: #ef4444;
+  margin-bottom: 16px;
+}
+
+.art-error-message {
+  font-size: 16px;
+  margin-bottom: 16px;
+}
+
+.art-error-retry {
+  background: #3b82f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.art-error-retry:hover {
+  background: #2563eb;
+}
+
+/* Poster Image */
+.art-poster {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  z-index: 1;
+}
+
+/* Subtitle Styling */
+.art-subtitle {
+  position: absolute;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  font-size: 16px;
+  line-height: 1.4;
+  text-align: center;
+  max-width: 80%;
+  z-index: 5;
+}
+
+/* Context Menu */
+.art-contextmenus {
+  position: absolute;
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: 8px;
+  padding: 8px;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.art-contextmenu-item {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  color: white;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: background-color 0.2s ease;
+}
+
+.art-contextmenu-item:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Notice/Toast Messages */
+.art-notice {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  z-index: 1000;
+  animation: art-notice-slide 0.3s ease;
+}
+
+@keyframes art-notice-slide {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+/* Info Panel */
+.art-info {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  font-size: 12px;
+  z-index: 1000;
+}
+
+.art-info-item {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 4px;
+}
+
+.art-info-item:last-child {
+  margin-bottom: 0;
+}
+
+/* Mask Overlay */
+.art-mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 2;
+  display: none;
+}
+
+.art-mask.show {
+  display: block;
+}
+
+/* State Indicators */
+.art-state {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+}
+
+.art-state-play {
+  width: 80px;
+  height: 80px;
+  background: rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 32px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.art-state-play:hover {
+  background: rgba(0, 0, 0, 0.8);
+  transform: scale(1.1);
+}
+
+/* Mini Progress Bar */
+.art-mini-progress-bar {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 3px;
+  background: #3b82f6;
+  transition: width 0.1s ease;
+  z-index: 3;
+}
+
+/* Gesture Indicators */
+.art-gesture {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  font-size: 24px;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.art-gesture-volume {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.art-gesture-brightness {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
+
+.art-gesture-seek {
+  background: rgba(0, 0, 0, 0.6);
+  padding: 8px 16px;
+  border-radius: 20px;
+  backdrop-filter: blur(10px);
+}
